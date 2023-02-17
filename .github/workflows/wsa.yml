@@ -76,15 +76,11 @@ jobs:
           else
             echo "wsaver=WSA" >> $GITHUB_ENV
           fi
-      - name: Create Tag
-        uses: rickstaa/action-create-tag@v1
-        with:
-          tag: WSA-${{ env.wsaver }}
       - name: Upload a Release Asset
         uses: softprops/action-gh-release@v1
         with:
           files: MagiskOnWSALocal/output/*
-          tag_name: ${{ env.wsaver }}
+          tag_name: WSA-${{ env.wsaver }}
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
