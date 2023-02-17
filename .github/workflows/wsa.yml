@@ -67,10 +67,21 @@ jobs:
         run: |
           cd MagiskOnWSALocal/output
           7z a -tzip -mx=4 -saa *
-      - name: Get WSA version
+      - name: Get WSA version x64
+        if: ${{ github.event.inputs.arch == 'x64' }}
         shell: bash
         run: |
-          regex="WSA_(.*)_*"
+          regex="WSA_(.*)_x64"
+          if [[ $(ls ./MagiskOnWSALocal/output/*.zip) =~ $regex ]]; then
+            echo "wsaver=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "wsaver=WSA" >> $GITHUB_ENV
+          fi
+      - name: Get WSA version arm64
+        if: ${{ github.event.inputs.arch == 'arm64' }}
+        shell: bash
+        run: |
+          regex="WSA_(.*)_arm64"
           if [[ $(ls ./MagiskOnWSALocal/output/*.zip) =~ $regex ]]; then
             echo "wsaver=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
