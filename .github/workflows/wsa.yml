@@ -70,7 +70,7 @@ jobs:
       - name: Get WSA version
         shell: bash
         run: |
-          regex="WSA_(.*)"
+          regex="WSA_(.*)_*"
           if [[ $(ls ./MagiskOnWSALocal/output/*.zip) =~ $regex ]]; then
             echo "wsaver=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
