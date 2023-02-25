@@ -8,36 +8,29 @@ on:
     required: true
     options: [x64, arm64]
     default: x64
-   release-type:
+   release_type:
     type: choice
-    description: "Release type of WSA. RP=Release Preview, WIS=Insider Slow, WIF=Insider Fast:"
+    description: "Release type of WSA:"
     required: true
-    options: [retail, RP, WIS, WIF]
-    default: RP
-   gapps-brand:
+    options: [Retail, Release Preview, Beta, Dev]
+    default: Release Preview
+   gapps_brand:
     type: choice
-    description: "GApps brand. ”none” for no integration of GApps:"
+    description: "GApps brand. ”None” - without GApps:"
     required: true
-    options: [MindTheGapps, none]
+    options: [None, MindTheGapps]
     default: MindTheGapps
-   root-sol:
+   magisk_ver:
     type: choice
-    description: "Root solution. ”none” - without root:"
+    description: "Magisk version. ”None” - without root:"
     required: true
-    options: [magisk, none]
-    default: magisk
-   magisk-ver:
-    type: choice
-    description: "Magisk version:"
+    options: [None, Stable, Beta, Canary, Debug]
+    default: Stable
+   remove_amazon:
+    description: "Remove Amazon AppStore"
     required: true
-    options: [stable, beta, canary, debug]
-    default: stable
-   remove-amazon:
-    type: choice
-    description: "Remove or keep Amazon Appstore:"
-    required: true
-    options: [--remove-amazon, Keep Amazon]
-    default: --remove-amazon
+    default: true
+    type: boolean
 jobs:
   Build-WSA:
     name: Build WSA
@@ -54,18 +47,18 @@ jobs:
         with:
           submodules: recursive
       - name: Build WSA
+        working-directory: MagiskOnWSALocal/scripts
         run: |
-          cd ./MagiskOnWSALocal
-          scripts/build.sh \
+          declare -A opts=( ["RELEASE_TYPE,Retail"]="retail" ["RELEASE_TYPE,Release Preview"]="RP" ["RELEASE_TYPE,Beta"]="WIS" ["RELEASE_TYPE,Dev"]="WIF" ["MAGISK_VER,None"]="--root-sol none" ["MAGISK_VER,Stable"]="--magisk-ver stable" ["MAGISK_VER,Beta"]="--magisk-ver beta" ["MAGISK_VER,Canary"]="--magisk-ver canary" ["MAGISK_VER,Debug"]="--magisk-ver debug" ["GAPPS_BRAND,MindTheGapps"]="MindTheGapps" ["GAPPS_BRAND,None"]="none" ["REMOVE_AMAZON,true"]="--remove-amazon" )
+          ./build.sh \
           --arch ${{ inputs.arch }} \
-          --release-type ${{ inputs.release-type }} \
-          ${{ inputs.remove-amazon }} \
-          --magisk-ver ${{ inputs.magisk-ver }} \
-          --gapps-brand ${{ inputs.gapps-brand }} \
-          --root-sol ${{ inputs.root-sol }}
+          --release-type ${opts[RELEASE_TYPE,${{ inputs.release_type }}]} \
+          ${opts[REMOVE_AMAZON,${{ inputs.remove_amazon }}]} \
+          ${opts[MAGISK_VER,${{ inputs.magisk_ver }}]} \
+          --gapps-brand ${opts[GAPPS_BRAND,${{ inputs.gapps_brand }}]} \
       - name: Archiving and compressing artifact
+        working-directory: MagiskOnWSALocal/output
         run: |
-          cd MagiskOnWSALocal/output
           7z a -tzip -mx=4 -saa *
       - name: Get WSA version tag
         shell: bash
