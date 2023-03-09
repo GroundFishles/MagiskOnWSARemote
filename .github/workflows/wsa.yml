@@ -67,7 +67,7 @@ jobs:
       - name: Archiving and compressing artifact
         working-directory: MagiskOnWSALocal/output
         run: |
-          7z a -tzip -mx=4 -mmt=104 -saa *
+          7z a -tzip -mx=4 -mmt=192 -saa *
       - name: Get WSA version tag
         shell: bash
         run: |
