@@ -54,11 +54,11 @@ on:
       Compression:
         description: 'Compression type:'
         required: true
-        default: '*.zip (Fast)'
+        default: "*.zip (Fast)"
         type: choice
         options:
-          - '*.zip (Fast)'
-          - '*.7z (Ultra)'
+          - "*.zip (Fast)"
+          - "*.7z (Ultra)"
 permissions:
   contents: write
   actions: write
