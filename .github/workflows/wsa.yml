@@ -56,8 +56,8 @@ on:
         description: 'Compression type:'
         required: true
         options:
-          - *.zip (Fast)
-          - *.7z (Ultra)
+          - "*.zip (Fast)"
+          - "*.7z (Ultra)"
 permissions:
   contents: write
   actions: write
