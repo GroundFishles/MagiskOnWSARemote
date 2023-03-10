@@ -126,7 +126,7 @@ jobs:
       - name: Get WSA version tag
         run: |
           regex="WSA_(.*)_${{ steps.build_wsa.outputs.arch }}"
-          if [[ $(ls ./MagiskOnWSALocal/output/*.${opts[COMPRESSION,${{ inputs.compression }}]}) =~ $regex ]]; then
+          if [[ $(ls ./MagiskOnWSALocal/output/*${{ steps.build_wsa.outputs.compression }}) =~ $regex ]]; then
             echo "wsaver=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
             echo "wsaver=WSA" >> $GITHUB_ENV
