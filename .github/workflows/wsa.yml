@@ -51,6 +51,13 @@ on:
         required: true
         default: false
         type: boolean
+      Compression:
+        type: choice
+        description: 'Compression type:'
+        required: true
+        options:
+          - *.zip (Fast)
+          - *.7z (Ultra)
 permissions:
   contents: write
   actions: write
@@ -112,7 +119,12 @@ jobs:
       - name: Archiving and compressing artifact
         working-directory: MagiskOnWSALocal/output
         run: |
-          7z a -tzip -mx4 -mmt104 -saa *
+          if [[ "${{ inputs.compression }}" == "*.zip (Fast)" ]]; then
+            7z a -tzip -mx4 -mmt104 -saa *
+          fi
+          if [[ "${{ inputs.compression }}" == "*.7z (Ultra)" ]]; then
+            7z a -mx9 -mmt104 -saa *
+          fi
       - name: Get WSA version tag
         run: |
           regex="WSA_(.*)_${{ steps.build_wsa.outputs.arch }}"
