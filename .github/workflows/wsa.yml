@@ -52,7 +52,7 @@ on:
         default: false
         type: boolean
       Compression:
-        description: 'Compression type:'
+        description: 'Compression format:'
         required: true
         default: '*.zip (Fast)'
         type: choice
@@ -118,10 +118,10 @@ jobs:
         working-directory: MagiskOnWSALocal/output
         run: |
           if [[ "${{ inputs.compression }}" == "*.zip (Fast)" ]]; then
-            7z a -tzip -mx4 -mmt104 -saa *
+            7z a -tzip -m0=lzma -mx4 -mmt104 -saa *
           fi
           if [[ "${{ inputs.compression }}" == "*.7z (Ultra)" ]]; then
-            7z a -mx9 -mmt104 -saa *
+            7z a -t7z -m0=lzma2 -ms=on -mx9 -mmt104 -saa *
           fi
       - name: Get WSA version tag
         run: |
