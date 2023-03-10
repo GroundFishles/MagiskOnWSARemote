@@ -74,13 +74,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y setools lzip patchelf e2fsprogs python3-pip aria2 p7zip-full attr xz-utils unzip cabextract
-          sudo dpkg --add-architecture i386
-          sudo mkdir -pm755 /etc/apt/keyrings
-          sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-          sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
-          sudo apt-get update
-          sudo apt-get install --install-recommends winehq-stable
+          sudo apt-get install -y setools wine lzip patchelf e2fsprogs python3-pip aria2 p7zip-full attr xz-utils unzip cabextract
           aria2c -d /usr/local/bin/ https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
           sudo chmod +x /usr/local/bin/winetricks
           python3 -m pip install requests
@@ -113,6 +107,7 @@ jobs:
             aria2c -d ./download -o magisk-stable.zip https://huskydg.github.io/magisk-files/app-release.apk
           fi
           echo "arch=${opts[ARCH,${{ inputs.arch }}]}" >> $GITHUB_OUTPUT
+          echo "compression=${opts[COMPRESSION,${{ inputs.compression }}]}" >> $GITHUB_OUTPUT
           scripts/build.sh \
           --arch ${opts[ARCH,${{ inputs.arch }}]} \
           --release-type ${opts[RELEASE_TYPE,${{ inputs.release_type }}]} \
@@ -131,7 +126,7 @@ jobs:
       - name: Get WSA version tag
         run: |
           regex="WSA_(.*)_${{ steps.build_wsa.outputs.arch }}"
-          if [[ $(ls ./MagiskOnWSALocal/output/*${opts[COMPRESSION,${{ inputs.compression }}]}) =~ $regex ]]; then
+          if [[ $(ls ./MagiskOnWSALocal/output/*${{ steps.build_wsa.outputs.compression }}) =~ $regex ]]; then
             echo "wsaver=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
             echo "wsaver=WSA" >> $GITHUB_ENV
