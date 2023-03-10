@@ -118,7 +118,7 @@ jobs:
         working-directory: MagiskOnWSALocal/output
         run: |
           if [[ "${{ inputs.compression }}" == "*.zip (Fast)" ]]; then
-            7z a -tzip -mx=1 -mm=PPMd -mmt=104 -saa *
+            7z a -tzip -mx=1 -mm=Copy -mmt=104 -saa *
           fi
           if [[ "${{ inputs.compression }}" == "*.7z (Ultra)" ]]; then
             7z a -t7z -m0=lzma2 -mx9 -mmt104 -saa *
