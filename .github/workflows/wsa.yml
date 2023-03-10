@@ -1,51 +1,56 @@
 name: Build WSA
 on:
- workflow_dispatch:
-  inputs:
-   arch:
-    type: choice
-    description: 'Architecture WSA:'
-    required: true
-    options:
-      - x64
-      - ARM64
-    default: x64
-   release_type:
-    type: choice
-    description: 'WSA Release Channel:'
-    required: true
-    options:
-      - General Availability
-      - Release Preview
-      - Beta
-      - Dev
-    default: Release Preview
-   gapps_brand:
-    type: choice
-    description: 'GApps brand. "None" - without GApps:'
-    required: true
-    options:
-      - None
-      - MindTheGapps
-    default: MindTheGapps
-   root_ver:
-    type: choice
-    description: 'Root version. "None" - without root:'
-    required: true
-    options:
-      - None
-      - Magisk (Stable)
-      - Magisk (Beta)
-      - Magisk (Canary)
-      - Magisk (Debug)
-      - Magisk Delta (Canary)
-      - KernelSU
-    default: Magisk (Stable)
-   remove_amazon:
-    description: 'Remove Amazon AppStore'
-    required: true
-    default: true
-    type: boolean
+  workflow_dispatch:
+    inputs:
+      arch:
+        type: choice
+        description: 'Architecture WSA:'
+        required: true
+        options:
+          - x64
+          - ARM64
+        default: x64
+      release_type:
+        type: choice
+        description: 'WSA Release Channel:'
+        required: true
+        options:
+          - General Availability
+          - Release Preview
+          - Beta
+          - Dev
+        default: Release Preview
+      gapps_brand:
+        type: choice
+        description: 'GApps brand. "None" - without GApps:'
+        required: true
+        options:
+          - None
+          - MindTheGapps
+        default: MindTheGapps
+      root_ver:
+        type: choice
+        description: 'Root version. "None" - without root:'
+        required: true
+        options:
+          - None
+          - Magisk (Stable)
+          - Magisk (Beta)
+          - Magisk (Canary)
+          - Magisk (Debug)
+          - Magisk Delta (Canary)
+          - KernelSU
+        default: Magisk (Stable)
+      remove_amazon:
+        description: 'Remove Amazon AppStore'
+        required: true
+        default: true
+        type: boolean
+      win10_patch:
+        description: 'Integrate Patch for Win10'
+        required: true
+        default: false
+        type: boolean
 permissions:
   contents: write
   actions: write
