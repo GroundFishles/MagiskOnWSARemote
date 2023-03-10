@@ -3,44 +3,44 @@ on:
   workflow_dispatch:
     inputs:
       arch:
-        type: choice
         description: 'Architecture WSA:'
         required: true
-        options:
-          - x64
-          - ARM64
-        default: x64
-      release_type:
+        default: 'x64'
         type: choice
+        options:
+          - 'x64'
+          - 'ARM64'
+      release_type:
         description: 'WSA Release Channel:'
         required: true
-        options:
-          - General Availability
-          - Release Preview
-          - Beta
-          - Dev
-        default: Release Preview
-      gapps_brand:
+        default: 'Release Preview'
         type: choice
+        options:
+          - 'General Availability'
+          - 'Release Preview'
+          - 'Beta'
+          - 'Dev'
+      gapps_brand:
         description: 'GApps brand. "None" - without GApps:'
         required: true
-        options:
-          - None
-          - MindTheGapps
-        default: MindTheGapps
-      root_ver:
+        default: 'MindTheGapps'
         type: choice
+        options:
+          - 'None'
+          - 'MindTheGapps'
+      root_ver:
         description: 'Root version. "None" - without root:'
         required: true
+        default: 'Magisk (Stable)'
+        type: choice
         options:
-          - None
-          - Magisk (Stable)
-          - Magisk (Beta)
-          - Magisk (Canary)
-          - Magisk (Debug)
-          - Magisk Delta (Canary)
-          - KernelSU
-        default: Magisk (Stable)
+          - 'None'
+          - 'Magisk (Stable)'
+          - 'Magisk (Beta)'
+          - 'Magisk (Canary)'
+          - 'Magisk (Debug)'
+          - 'Magisk Delta (Canary)'
+          - 'KernelSU'
       remove_amazon:
         description: 'Remove Amazon AppStore'
         required: true
@@ -52,13 +52,13 @@ on:
         default: false
         type: boolean
       Compression:
-        type: choice
         description: 'Compression type:'
         required: true
+        default: '*.zip (Fast)'
+        type: choice
         options:
-          - *.zip (Fast)
-          - *.7z (Ultra)
-        default: *.zip (Fast)
+          - '*.zip (Fast)'
+          - '*.7z (Ultra)'
 permissions:
   contents: write
   actions: write
