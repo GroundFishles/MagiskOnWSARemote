@@ -121,7 +121,7 @@ jobs:
             7z a -tzip -m0=LZMA -mx=4 -mmt=104 -saa *
           fi
           if [[ "${{ inputs.compression }}" == "*.7z (Ultra)" ]]; then
-            7z a -t7z -m0=lzma2 -ms=on -mx1 -mmt104 -saa *
+            7z a -t7z -m0=lzma2 -mx1 -mmt104 -saa *
           fi
       - name: Get WSA version tag
         run: |
