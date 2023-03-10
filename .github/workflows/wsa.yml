@@ -54,11 +54,11 @@ on:
       Compression:
         description: 'Compression type:'
         required: true
-        default: "*.zip (Fast)"
+        default: '*.zip (Fast)'
         type: choice
         options:
-          - "*.zip (Fast)"
-          - "*.7z (Ultra)"
+          - '*.zip (Fast)'
+          - '*.7z (Ultra)'
 permissions:
   contents: write
   actions: write
@@ -126,7 +126,7 @@ jobs:
       - name: Get WSA version tag
         run: |
           regex="WSA_(.*)_${{ steps.build_wsa.outputs.arch }}"
-          if [[ $(ls ./MagiskOnWSALocal/output/*${{ steps.build_wsa.outputs.compression }}) =~ $regex ]]; then
+          if [[ $(ls ./MagiskOnWSALocal/output/*.${opts[COMPRESSION,${{ inputs.compression }}]}) =~ $regex ]]; then
             echo "wsaver=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
             echo "wsaver=WSA" >> $GITHUB_ENV
