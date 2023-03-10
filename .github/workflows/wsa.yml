@@ -105,6 +105,8 @@ jobs:
             ["GAPPS_BRAND,MindTheGapps"]="MindTheGapps"
             ["GAPPS_BRAND,None"]="none"
             ["REMOVE_AMAZON,true"]="--remove-amazon"
+            ["COMPRESSION,*.zip (Fast)"]="zip"
+            ["COMPRESSION,*.7z (Ultra)"]="7z"   
           )
           if [[ "${{ inputs.root_ver }}" == "Magisk Delta (Canary)" ]]; then
             aria2c -d ./download -o magisk-stable.zip https://huskydg.github.io/magisk-files/app-release.apk
@@ -128,7 +130,7 @@ jobs:
       - name: Get WSA version tag
         run: |
           regex="WSA_(.*)_${{ steps.build_wsa.outputs.arch }}"
-          if [[ $(ls ./MagiskOnWSALocal/output/*${{ inputs.compression }}) =~ $regex ]]; then
+          if [[ $(ls ./MagiskOnWSALocal/output/*${opts[COMPRESSION,${{ inputs.compression }}]}) =~ $regex ]]; then
             echo "wsaver=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
             echo "wsaver=WSA" >> $GITHUB_ENV
