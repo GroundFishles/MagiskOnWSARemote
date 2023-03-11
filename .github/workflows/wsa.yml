@@ -128,7 +128,7 @@ jobs:
         run: |
           aria2c -d ./download/win10patch/a https://github.com/cinit/WSAPatch/releases/download/r2023.01.19/patch-20230119.7z
           aria2c -d ./download/win10patch https://raw.githubusercontent.com/cinit/WSAPatch/main/original.dll.win11.22h2/x86_64/winhttp.dll
-          7z xl ./download/win10patch/a/*.7z -o=./output/../WsaClient
+          7z x l ./download/win10patch/a/*.7z -o=./output/../WsaClient
           mv ./download/win10patch/*.dll ./output/../WsaClient
 
       - name: Archiving and compressing artifact
