@@ -1,6 +1,8 @@
 name: Build WSA
+
 on:
   workflow_dispatch:
+    
     inputs:
       arch:
         description: 'Architecture WSA:'
@@ -59,18 +61,22 @@ on:
         options:
           - '*.zip (Fast)'
           - '*.7z (Ultra)'
+
 permissions:
   contents: write
   actions: write
+
 jobs:
   Build-WSA:
     name: Build WSA
     runs-on: ubuntu-latest
     steps:
+   
       - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: recursive
+    
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -79,6 +85,7 @@ jobs:
           sudo chmod +x /usr/local/bin/winetricks
           python3 -m pip install requests
           winetricks msxml6
+    
       - name: Build WSA
         id: build_wsa
         working-directory: MagiskOnWSALocal
@@ -114,15 +121,20 @@ jobs:
           ${opts[REMOVE_AMAZON,${{ inputs.remove_amazon }}]} \
           ${opts[ROOT_VER,${{ inputs.root_ver }}]} \
           --gapps-brand ${opts[GAPPS_BRAND,${{ inputs.gapps_brand }}]}
+    
+      - name: Integration patch for win10
+        if:
+     
       - name: Archiving and compressing artifact
         working-directory: MagiskOnWSALocal/output
         run: |
           if [[ "${{ inputs.compression }}" == "*.zip (Fast)" ]]; then
-            7z a -tzip -mx=4 -mm=deflate -mmt=104 -saa *
+            7z a -tzip -mx4 -mm=copy -mmt104 -saa *
           fi
           if [[ "${{ inputs.compression }}" == "*.7z (Ultra)" ]]; then
             7z a -t7z -m0=lzma2 -mx9 -mmt104 -saa *
           fi
+  
       - name: Get WSA version tag
         run: |
           regex="WSA_(.*)_${{ steps.build_wsa.outputs.arch }}"
@@ -131,12 +143,14 @@ jobs:
           else
             echo "wsaver=WSA" >> $GITHUB_ENV
           fi
+  
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
           files: MagiskOnWSALocal/output/*
           tag_name: WSA-${{ env.wsaver }}
           name: WSA ${{ env.wsaver }}
+    
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
