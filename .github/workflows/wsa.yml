@@ -123,8 +123,14 @@ jobs:
           --gapps-brand ${opts[GAPPS_BRAND,${{ inputs.gapps_brand }}]}
     
       - name: Integration patch for win10
-        if:
-     
+        if: ${{ github.event.inputs.win10_patch == 'true' }}
+        working-directory: MagiskOnWSALocal
+        run: |
+          aria2c -d ./download/win10patch/a https://github.com/cinit/WSAPatch/releases/download/r2023.01.19/patch-20230119.7z
+          aria2c -d ./download/win10patch https://raw.githubusercontent.com/cinit/WSAPatch/main/original.dll.win11.22h2/x86_64/winhttp.dll
+          7z x ./download/win10patch/a/*.7z -o./output/../WsaClient
+          mv ./download/win10patch/*.dll ./output/../WsaClient
+
       - name: Archiving and compressing artifact
         working-directory: MagiskOnWSALocal/output
         run: |
@@ -135,7 +141,7 @@ jobs:
             7z a -t7z -m0=lzma2 -mx9 -mmt104 -saa *
           fi
   
-      - name: Get WSA version tag
+      - name: Getting WSA version tag
         run: |
           regex="WSA_(.*)_${{ steps.build_wsa.outputs.arch }}"
           if [[ $(ls ./MagiskOnWSALocal/output/*${{ steps.build_wsa.outputs.compression }}) =~ $regex ]]; then
